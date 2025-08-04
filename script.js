@@ -25,16 +25,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to add a task to the DOM (and optionally to localStorage)
     function addTask(taskText, save = true) {
-        const trimmedText = taskText.trim();
-
-        if (trimmedText === '') {
+        if (taskText === '') {
             alert('Please enter a task!');
             return;
         }
 
         // Create the list item
         const li = document.createElement('li');
-        li.textContent = trimmedText;
+        li.textContent = taskText;
 
         // Create the remove button
         const removeButton = document.createElement('button');
@@ -46,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
             taskList.removeChild(li);
 
             // Update storage
-            const tasks = getStoredTasks().filter(task => task !== trimmedText);
+            const tasks = getStoredTasks().filter(task => task !== taskText);
             saveTasksToStorage(tasks);
         };
 
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Save to localStorage if needed
         if (save) {
             const tasks = getStoredTasks();
-            tasks.push(trimmedText);
+            tasks.push(taskText);
             saveTasksToStorage(tasks);
         }
 
@@ -67,13 +65,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listener for Add Task button
     addButton.addEventListener('click', function () {
-        addTask(taskInput.value);
+        const taskText = taskInput.value.trim(); // Required: use .trim() here
+        addTask(taskText);
     });
 
     // Event listener for Enter key in task input
     taskInput.addEventListener('keypress', function (event) {
         if (event.key === 'Enter') {
-            addTask(taskInput.value);
+            const taskText = taskInput.value.trim(); // Required: use .trim() here
+            addTask(taskText);
         }
     });
 });
